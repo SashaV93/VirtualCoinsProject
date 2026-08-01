@@ -8,7 +8,10 @@ export const SETTINGS_STORAGE_KEY = 'cryptonite.settings';
 const DEFAULT_MODEL = 'gpt-4o-mini';
 
 interface SettingsState {
-  /** OpenAI key. Empty string = use the built-in rule-based fallback. */
+  /**
+   * OpenAI key, supplied through `.env` as VITE_OPENAI_API_KEY.
+   * Empty string = fall back to the built-in rule-based analysis.
+   */
   apiKey: string;
   model: string;
   /**
@@ -41,12 +44,6 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setApiKey(state, action: PayloadAction<string>) {
-      state.apiKey = action.payload;
-    },
-    setModel(state, action: PayloadAction<string>) {
-      state.model = action.payload || DEFAULT_MODEL;
-    },
     setCryptoCompareKey(state, action: PayloadAction<string>) {
       state.cryptoCompareKey = action.payload;
     },
@@ -56,7 +53,7 @@ const settingsSlice = createSlice({
   },
 });
 
-export const { setApiKey, setModel, setCryptoCompareKey, setLiveProvider } = settingsSlice.actions;
+export const { setCryptoCompareKey, setLiveProvider } = settingsSlice.actions;
 export default settingsSlice.reducer;
 
 export const selectApiKey = (s: RootState) => s.settings.apiKey;

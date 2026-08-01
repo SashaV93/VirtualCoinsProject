@@ -1,11 +1,7 @@
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Alert,
   Avatar,
   Box,
@@ -16,7 +12,6 @@ import {
   Divider,
   Paper,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -26,7 +21,7 @@ import { fetchAiPayload } from '../services/coinsApi';
 import { loadCoins } from '../store/coinsSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectSelectedIds } from '../store/selectionSlice';
-import { selectApiKey, selectModel, setApiKey, setModel } from '../store/settingsSlice';
+import { selectApiKey, selectModel } from '../store/settingsSlice';
 import type { AiPayload, AiRecommendation, LoadStatus } from '../types/coin';
 import { formatCompactUsd, formatPrice } from '../utils/format';
 
@@ -109,49 +104,7 @@ export default function AiPage() {
         Ask for a buy / avoid recommendation on each of the coins you are tracking.
       </Typography>
 
-      <Accordion sx={{ mb: 3, backgroundImage: 'none' }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Typography>OpenAI settings</Typography>
-            <Chip
-              size="small"
-              color={apiKey ? 'success' : 'warning'}
-              variant="outlined"
-              label={apiKey ? 'ChatGPT enabled' : 'Offline rules'}
-            />
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack spacing={2}>
-            <TextField
-              label="OpenAI API key"
-              type="password"
-              size="small"
-              fullWidth
-              value={apiKey}
-              onChange={(e) => dispatch(setApiKey(e.target.value))}
-              placeholder="sk-…"
-              helperText="Stored only in this browser's localStorage. Leave empty to use the built-in rule-based analysis."
-            />
-            <TextField
-              label="Model"
-              size="small"
-              fullWidth
-              value={model}
-              onChange={(e) => dispatch(setModel(e.target.value))}
-            />
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
-
-      {!apiKey && (
-        <Alert severity="info" sx={{ mb: 3 }}>
-          No OpenAI key configured — recommendations are generated locally from the same market
-          data that would be sent to ChatGPT. Add a key above to use the real API.
-        </Alert>
-      )}
-
-      <Stack spacing={2}>
+      <Stack spacing={2} sx={{ mt: 3 }}>
         {selectedCoins.map((coin) => {
           const entry = entries[coin.id];
           return (
@@ -195,10 +148,13 @@ export default function AiPage() {
                       color={entry.result.worthBuying ? 'success' : 'error'}
                       label={entry.result.worthBuying ? 'Worth buying' : 'Not worth buying'}
                     />
+                    {/* Never let a locally-computed verdict pass for a ChatGPT one. */}
                     <Chip
                       size="small"
                       variant="outlined"
-                      label={entry.result.source === 'openai' ? `ChatGPT · ${model}` : 'Local rules'}
+                      label={
+                        entry.result.source === 'openai' ? `ChatGPT · ${model}` : 'Rule-based analysis'
+                      }
                     />
                   </Stack>
 

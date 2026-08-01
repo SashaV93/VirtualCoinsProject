@@ -65,11 +65,14 @@ suggests switching — it does not silently drop it.
 
 ### OpenAI key (optional)
 
-Without one the AI page computes a transparent rule-based verdict from the same market
-data, labelled "Local rules". With one it calls ChatGPT. Set it in *OpenAI settings* on
-the AI page, or copy `.env.example` to `.env`. Note Vite inlines `VITE_*` variables into
-the bundle, so a key added that way is visible on a public deployment — the in-app field
-keeps it in your own browser's `localStorage` instead.
+Copy `.env.example` to `.env`, set `VITE_OPENAI_API_KEY`, and restart the dev server —
+the AI page then calls ChatGPT. Without a key it computes a rule-based verdict from the
+same market data instead, and each recommendation is labelled with which of the two
+produced it, so a local verdict is never presented as a ChatGPT one.
+
+Vite inlines `VITE_*` variables into the JavaScript bundle, so a key committed this way
+would be readable by anyone visiting the deployed site. `.env` is git-ignored for that
+reason, and the public deployment runs without a key.
 
 ---
 
