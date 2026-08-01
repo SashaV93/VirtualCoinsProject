@@ -10,13 +10,8 @@ Built with **React 19 + TypeScript + Redux Toolkit + React Router + Material UI 
 
 ## Links
 
-<!--
-  Replace <user> and <repo> below with your real GitHub username and repository
-  name. Both links are required by the task.
--->
-
-- **GitHub repository:** `https://github.com/<user>/<repo>`
-- **Live site (GitHub Pages):** `https://<user>.github.io/<repo>/`
+- **GitHub repository:** <https://github.com/SashaV93/VirtualCoinsProject>
+- **Live site (GitHub Pages):** <https://sashav93.github.io/VirtualCoinsProject/>
 
 ---
 
@@ -125,9 +120,11 @@ CoinGecko's own defaults, spelled out so the "100 coins" the task asks for canno
 1. **Edit `src/data/aboutData.ts`** — name, contact details, GitHub and LinkedIn URLs.
 2. **Replace the photo** — drop your picture at `public/profile.jpg` and change `photo`
    in `aboutData.ts` to `` `${import.meta.env.BASE_URL}profile.jpg` ``.
-3. **Push to GitHub and enable Pages** (see Deploying below).
-4. **Fill in the two links** at the top of this file, then commit and push again.
-5. Delete `node_modules`, zip the folder, upload it.
+3. `git push` — the site redeploys automatically.
+4. Delete `node_modules`, zip the folder, upload it.
+
+The GitHub repository and the live site are already up; the links are at the top of this
+file.
 
 ---
 
@@ -143,21 +140,13 @@ correctly.
 
 ### GitHub Pages
 
-A workflow is included at `.github/workflows/deploy.yml`. Create an empty repository on
-GitHub (no README, no .gitignore — this project already has both), then:
+Already live. `.github/workflows/deploy.yml` builds and publishes on every push to
+`main`, with **Settings → Pages → Source** set to **GitHub Actions**. Just push and the
+site updates:
 
 ```bash
-git remote add origin https://github.com/<user>/<repo>.git
+git push
 ```
-
-```bash
-git push -u origin main
-```
-
-Then in the repository go to **Settings → Pages → Source → GitHub Actions**. The first
-push triggers the workflow; the site lands at `https://<user>.github.io/<repo>/`.
-Finally, paste both URLs into the Links section at the top of this file, commit and push
-again.
 
 ### Firebase Hosting
 
