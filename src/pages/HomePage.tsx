@@ -1,5 +1,5 @@
 import { Alert, Box, Button, CircularProgress, Container, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CoinCard from '../components/CoinCard';
 import Hero from '../components/Hero';
 import { loadCoins, selectFilteredCoins, selectSearch } from '../store/coinsSlice';
@@ -18,6 +18,21 @@ export default function HomePage() {
   useEffect(() => {
     void dispatch(loadCoins());
   }, [dispatch]);
+
+  /**
+   * A first attempt takes well under a second. If we are still loading after
+   * three, the service is sitting in its rate-limit backoff — say so instead of
+   * showing a spinner that looks stuck.
+   */
+  const [slowLoad, setSlowLoad] = useState(false);
+  useEffect(() => {
+    if (status !== 'loading') {
+      setSlowLoad(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setSlowLoad(true), 3000);
+    return () => window.clearTimeout(timer);
+  }, [status]);
 
   return (
     <>
@@ -41,7 +56,11 @@ export default function HomePage() {
         {status === 'loading' && (
           <Stack spacing={2} sx={{ py: 8, alignItems: 'center' }}>
             <CircularProgress />
-            <Typography color="text.secondary">Loading coins…</Typography>
+            <Typography color="text.secondary">
+              {slowLoad
+                ? 'CoinGecko is rate-limiting us — waiting for the limit to reset…'
+                : 'Loading coins…'}
+            </Typography>
           </Stack>
         )}
 
@@ -60,21 +79,6 @@ export default function HomePage() {
 
         {status === 'succeeded' && coins.length === 0 && search && (
           <Alert severity="info">No coin matches “{search}”. Try a different name or symbol.</Alert>
-        )}
-
-        {/* A 200 OK with an empty body is not the same thing as "no match". */}
-        {status === 'succeeded' && total === 0 && (
-          <Alert
-            severity="warning"
-            action={
-              <Button color="inherit" size="small" onClick={() => window.location.reload()}>
-                Reload
-              </Button>
-            }
-          >
-            CoinGecko returned no coins. This usually means the free-tier rate limit was hit —
-            wait a minute and reload.
-          </Alert>
         )}
 
         {coins.length > 0 && (
