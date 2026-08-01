@@ -1,16 +1,20 @@
 /**
  * ---------------------------------------------------------------------------
  * EDIT THIS FILE — this is the only place the About page gets its content from.
- * To use a real photo, drop it at `public/profile.jpg` and change `photo` below
- * to `${import.meta.env.BASE_URL}profile.jpg`.
  * ---------------------------------------------------------------------------
  */
+
+// Files in `public/` are referenced through BASE_URL so the app also works when
+// it is hosted under a sub-path (e.g. GitHub Pages project sites).
+const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`;
+
 export const about = {
   fullName: 'Sasha Visloushkin',
   title: 'Full Stack Web Developer',
-  // Files in `public/` are referenced through BASE_URL so the app also works
-  // when it is hosted under a sub-path (e.g. GitHub Pages project sites).
-  photo: `${import.meta.env.BASE_URL}profile.svg`,
+  /** Drop your picture at `public/profile.jpg` and it replaces the placeholder. */
+  photo: asset('profile.jpg'),
+  /** Shown if `profile.jpg` is not there yet. */
+  photoFallback: asset('profile.svg'),
   email: 'kasandravis93@gmail.com',
   location: 'Israel',
 

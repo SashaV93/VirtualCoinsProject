@@ -16,6 +16,12 @@ export default function AboutPage() {
             component="img"
             src={about.photo}
             alt={about.fullName}
+            // Until public/profile.jpg is added, fall back to the placeholder
+            // rather than showing a broken image.
+            onError={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              if (img.src !== about.photoFallback) img.src = about.photoFallback;
+            }}
             sx={{
               width: 148,
               height: 148,
