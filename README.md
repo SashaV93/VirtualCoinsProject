@@ -10,10 +10,13 @@ Built with **React 19 + TypeScript + Redux Toolkit + React Router + Material UI 
 
 ## Links
 
-<!-- Fill these in after you push and deploy — the task requires both. -->
+<!--
+  Replace <user> and <repo> below with your real GitHub username and repository
+  name. Both links are required by the task.
+-->
 
-- **GitHub repository:** _TODO — paste the repo URL here_
-- **Live site (Cloud):** _TODO — paste the Firebase / GitHub Pages URL here_
+- **GitHub repository:** `https://github.com/<user>/<repo>`
+- **Live site (GitHub Pages):** `https://<user>.github.io/<repo>/`
 
 ---
 
@@ -122,8 +125,9 @@ CoinGecko's own defaults, spelled out so the "100 coins" the task asks for canno
 1. **Edit `src/data/aboutData.ts`** — name, contact details, GitHub and LinkedIn URLs.
 2. **Replace the photo** — drop your picture at `public/profile.jpg` and change `photo`
    in `aboutData.ts` to `` `${import.meta.env.BASE_URL}profile.jpg` ``.
-3. **Fill in the two links** at the top of this file.
-4. Delete `node_modules`, zip the folder, upload it.
+3. **Push to GitHub and enable Pages** (see Deploying below).
+4. **Fill in the two links** at the top of this file, then commit and push again.
+5. Delete `node_modules`, zip the folder, upload it.
 
 ---
 
@@ -132,11 +136,28 @@ CoinGecko's own defaults, spelled out so the "100 coins" the task asks for canno
 `vite.config.ts` sets `base: './'` and the app uses `HashRouter`, so the build works from
 any sub-path and deep links survive a refresh without server rewrite rules.
 
+Serving the production build from a sub-path was verified locally before deploying:
+`dist/` was served at `http://localhost:5199/VirtualCoinsProject/` and the home page, a
+hard refresh on the deep link `#/about`, and the `public/profile.svg` image all resolved
+correctly.
+
 ### GitHub Pages
 
-A workflow is included at `.github/workflows/deploy.yml`. Push to `main`, then in the
-repository go to **Settings → Pages → Source → GitHub Actions**. The site lands at
-`https://<user>.github.io/<repo>/`.
+A workflow is included at `.github/workflows/deploy.yml`. Create an empty repository on
+GitHub (no README, no .gitignore — this project already has both), then:
+
+```bash
+git remote add origin https://github.com/<user>/<repo>.git
+```
+
+```bash
+git push -u origin main
+```
+
+Then in the repository go to **Settings → Pages → Source → GitHub Actions**. The first
+push triggers the workflow; the site lands at `https://<user>.github.io/<repo>/`.
+Finally, paste both URLs into the Links section at the top of this file, commit and push
+again.
 
 ### Firebase Hosting
 
